@@ -21,9 +21,13 @@ module TicketMaster::Provider
       def self.find_by_attributes(project_id, attributes = {})
         self.search(project_id, attributes)
       end
+      
+      def self.todo_lists(project_id)
+        BasecampAPI::TodoList.find(:all, :params => {:project_id => project_id})
+      end
 
       def self.search(project_id, options = {}, limit = 1000)
-        tickets = BasecampAPI::TodoList.find(:all, :params => {:project_id => project_id}).collect do |list|
+        tickets = todo_lists(project_id).collect do |list|
           list.todo_items.collect { |item|
             item.attributes['list'] = list
             item
