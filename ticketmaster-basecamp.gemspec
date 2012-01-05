@@ -66,19 +66,19 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<ticketmaster>, [">= 0.6.6"])
-      s.add_runtime_dependency(%q<activesupport>, ["= 3.1.1"])
-      s.add_runtime_dependency(%q<activeresource>, ["= 3.1.1"])
+      s.add_runtime_dependency(%q<activesupport>, ["= 3.0.11"])
+      s.add_runtime_dependency(%q<activeresource>, ["= 3.0.11"])
       s.add_development_dependency(%q<rspec>, [">= 1.2.9"])
     else
       s.add_dependency(%q<ticketmaster>, [">= 0.6.6"])
-      s.add_dependency(%q<activesupport>, ["= 3.1.1"])
-      s.add_dependency(%q<activeresource>, ["= 3.1.1"])
+      s.add_dependency(%q<activesupport>, ["= 3.0.11"])
+      s.add_dependency(%q<activeresource>, ["= 3.0.11"])
       s.add_dependency(%q<rspec>, [">= 1.2.9"])
     end
   else
     s.add_dependency(%q<ticketmaster>, [">= 0.6.6"])
-    s.add_dependency(%q<activesupport>, ["= 3.1.1"])
-    s.add_dependency(%q<activeresource>, ["= 3.1.1"])
+    s.add_dependency(%q<activesupport>, ["= 3.0.11"])
+    s.add_dependency(%q<activeresource>, ["= 3.0.11"])
     s.add_dependency(%q<rspec>, [">= 1.2.9"])
   end
 end
