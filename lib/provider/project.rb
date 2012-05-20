@@ -1,45 +1,23 @@
 module TicketMaster::Provider
   module Basecamp
     # Project class for ticketmaster-basecamp
-    #
-    # Remaps 
-    #
-    # description => announcement
-    # created_at => created_on
-    # updated_at => last_changed_on
     class Project < TicketMaster::Provider::Base::Project
       API = BasecampAPI::Project
-      
-      def description
-        announcement
-      end
-      
-      def description=(desc)
-        announcement = desc
-      end
-      
-      def created_at
-        begin
-          created_on.to_time
-        rescue
-          created_on
+      def initialize(*object) 
+        if object.first
+          object = object.first
+          unless object.is_a? Hash
+            hash = {:id => object.id,
+                    :name => object.name,
+                    :description => object.announcement,
+                    :created_at => object.created_on,
+                    :updated_at => object.last_changed_on}
+
+          else
+            hash = object
+          end
+          super hash
         end
-      end
-      
-      def created_at=(created)
-        created_on = created
-      end
-      
-      def updated_at
-        begin
-          last_changed_on.to_time
-        rescue
-          last_changed_on
-        end
-      end
-      
-      def updated_at=(updated)
-        last_changed_on = updated
       end
       
       def ticket!(*options)
@@ -70,7 +48,6 @@ module TicketMaster::Provider
           end
         end
       end
-
     end
   end
 end

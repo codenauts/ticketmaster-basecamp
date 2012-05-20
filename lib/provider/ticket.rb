@@ -15,7 +15,7 @@ module TicketMaster::Provider
     class Ticket < TicketMaster::Provider::Base::Ticket
       attr_accessor :list
       def self.find_by_id(project_id, id)
-        self.search(project_id, {'id' => id}).first
+        self.search(project_id, {'id' => id.to_i}).first
       end
       
       def self.find_by_attributes(project_id, attributes = {})
@@ -51,65 +51,30 @@ module TicketMaster::Provider
         self.new something
       end
       
-      def initialize(ticket, list = nil)
-        @system_data ||= {}
-        @cache ||= {}
-        @list = list
-        case ticket
-          when Hash
-            super(ticket.to_hash)
+      def initialize(*object)
+        if object.first
+          object = object.first
+          @system_data = {:client => object}
+          unless object.is_a? Hash
+            hash = {
+              :id => object.id,
+              :title => object.content
+            }
           else
-            @system_data[:client] = ticket
-            self.prefix_options ||= @system_data[:client].prefix_options if @system_data[:client].prefix_options
-            super(ticket.attributes)
+            hash = object
+          end
+          super hash
         end
       end
       
-      def status
-        self.completed ? 'completed' : 'incomplete'
-      end
-      
-      def priority
-        self.position
-      end
-      
-      def priority=(pri)
-        self.position = pri
-      end
-      
-      def title
-        "#{@list.name} - #{content[0..100]}"
-      end
-      
-      def title=(titl)
-        self.content = titl
-      end
-
-      def updated_at=(comp)
-        self.completed_on = comp
-      end
-      
       def description
-        self.content
-      end
-      
-      def description=(desc)
-        self.content = desc
-      end
-      
-      def assignee
-        self.responsible_party_name
-      end
-      
-      def requestor
-        self.creator_name
+        nil
       end
       
       def comment!(*options)
         options[0].merge!(:todo_item_id => id) if options.first.is_a?(Hash)
         self.class.parent::Comment.create(*options)
       end
-
     end
   end
 end
